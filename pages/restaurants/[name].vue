@@ -1,22 +1,39 @@
 <template>
   <div>
-    <Navbar />
-    <div class="restaurant-container">
-      <div class="image-container">
-        <img :src="restaurant.imageUrl" alt="" />
-      </div>
-      <div class="info-container">
-        <h1>{{ restaurant.name }}</h1>
-        <div class="stats-container">
-          <h5>Revenue (in billions)</h5>
-          <p>${{ restaurant.revenue }}</p>
+    <NuxtLayout name="custom" v-if="restaurant">
+      <div class="restaurant-container">
+        <div class="image-container">
+          <img :src="restaurant.imageUrl" alt="" />
         </div>
-        <div class="stats-container">
-          <h5>Number of Stores</h5>
-          <p>{{ restaurant.numberOfStores }}</p>
+        <div class="info-container">
+          <h1>{{ restaurant.name }}</h1>
+          <div class="stats-container">
+            <h5>Revenue (in billions)</h5>
+            <p>${{ restaurant.revenue }}</p>
+          </div>
+          <div class="stats-container">
+            <h5>Number of Stores</h5>
+            <p>{{ restaurant.numberOfStores }}</p>
+          </div>
+          <p class="content">{{ restaurant.content }}</p>
         </div>
-        <p class="content">{{ restaurant.content }}</p>
       </div>
+    </NuxtLayout>
+    <div class="restaurant-not-found" v-else>
+      <NuxtLayout name="error">
+        <template #header>
+          <h1>Restaurant Not Found</h1>
+        </template>
+
+        <template #redirectEl>
+          <button
+            class="btn btn-primary btn-lg go-back"
+            @click="router.push('/restaurants')"
+          >
+            Go Back
+          </button>
+        </template>
+      </NuxtLayout>
     </div>
   </div>
 </template>
@@ -76,5 +93,16 @@ const restaurant = restaurants.find((r) => r.name === name);
 .content {
   font-size: 1.5rem;
   margin-top: 4rem;
+}
+.img-container img {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.go-back {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 </style>
